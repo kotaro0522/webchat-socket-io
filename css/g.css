@@ -1,0 +1,11 @@
+.g {
+  //font-size: 5vw;
+  //background-color: rgba(0,0,0,0);
+  color: Black;
+  line-height: 1;
+  //margin: 2rem;
+  font-weight: regular;
+  //text-transform: uppercase;
+  font-family:'Meiryo';
+  text-align:center;
+}

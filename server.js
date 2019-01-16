@@ -79,7 +79,8 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('say', {
             socket_id: socket.id,
             login_name: data.login_name,
-            chat_message: data.chat_message
+            chat_message: data.chat_message,
+            animation_class: data.animation_class
         });
     });
 

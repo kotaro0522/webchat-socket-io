@@ -32,7 +32,9 @@ $(function () {
         if (chat_message !== '') {
             socket.emit('say', {
                 login_name: my_login_name,
-                chat_message: chat_message
+                chat_message: chat_message,
+                // この下のところをいい感じにしたら完成や！
+                animation_class: 'g'
             });
         }
         $('#chat_message').val('');
@@ -53,12 +55,13 @@ $(function () {
 });
 
 // チャットメッセージ追加
-function appendChat(message, position, login_name) {
-    $('#chatLogs').append('<div class="' + position + '_balloon">' + message + '</div>');
+function appendChat(message, position, login_name, animationClass) {
+    $('#chatLogs').append('<div class="' + position + '_balloon">' + '<div class="' + animationClass + '">' + message + '</div>' + '</div>');
     // 末尾にスクロール
     $('html,body').animate({
         scrollTop: $('#bottomDiv').offset().top
     }, 0);
+    startAnimation();
 }
 
 // ソケット初期化
@@ -80,15 +83,15 @@ function initSocket() {
     // チャットメッセージの同期
     socket.on('say', function (data) {
         if (my_socket_id !== data.socket_id) {
-            appendChat(data.chat_message, 'left', data.login_name);
+            appendChat(data.chat_message, 'left', data.login_name, data.animation_class);
         } else {
-            appendChat(data.chat_message, 'right', data.login_name);
+            appendChat(data.chat_message, 'right', data.login_name, data.animation_class);
         }
     });
 
     // 他ユーザがログインしたときにメッセージとして通知
     socket.on('join', function (data) {
-        appendChat(data.login_name + 'さんがログインしました。', 'left', '');
+        appendChat(data.login_name + 'さんがログインしました。', 'left', '', '');
     });
 
     // 他ユーザの入力中のときにステータスとして通知
@@ -101,7 +104,7 @@ function initSocket() {
 
     // 他ユーザがログアウトしたときにメッセージとして通知
     socket.on('logout', function (data) {
-        appendChat(data.login_name + 'さんがログアウトしました。', 'left', '');
+        appendChat(data.login_name + 'さんがログアウトしました。', 'left', '', '');
     });
 
     // ログインしたことをサーバへ通知する
